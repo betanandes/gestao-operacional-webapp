@@ -1,22 +1,21 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gestão Operacional — Construção a Seco</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestão Operacional — Construção a Seco</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- TOPBAR -->
+    <!-- TOPBAR -->
 <header class="topbar">
   <div class="logo">
     <div class="logo-mark">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
-      </svg>
+      <i class="fas fa-layer-group" style="color: white; font-size: 16px;"></i>
     </div>
     <div>
       <div class="logo-text">Gestão Operacional</div>
@@ -28,19 +27,18 @@
       <div class="sync-dot" id="sync-dot"></div>
       <span id="sync-label">Modo local</span>
     </div>
-    <div class="config-banner" id="config-banner" onclick="toggleConfig()">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"/></svg>
-      Google Sheets: <a>configurar</a>
-    </div>
+    <button class="btn-gear" id="config-banner" onclick="toggleConfig()" title="Configurar Google Sheets">
+      <i class="fas fa-cog"></i>
+    </button>
   </div>
 </header>
 
 <main class="page">
 
-  <!-- CONFIG CARD -->
+    <!-- CONFIG CARD -->
   <div class="config-card" id="config-card">
     <div class="config-title">
-      ⚙️  Conectar ao Google Sheets
+      <i class="fas fa-sliders-h"></i> Conectar ao Google Sheets
     </div>
     <div class="config-row">
       <div class="field full">
@@ -54,7 +52,7 @@
     </p>
   </div>
 
-  <!-- METRICS -->
+    <!-- METRICS -->
   <div class="metrics">
     <div class="metric-card">
       <div class="metric-label">Total de registros</div>
@@ -74,10 +72,10 @@
     </div>
   </div>
 
-  <!-- TOOLBAR -->
+    <!-- TOOLBAR -->
   <div class="toolbar">
     <div class="search-box">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <i class="fas fa-search search-icon"></i>
       <input type="text" id="busca" placeholder="Buscar por obra, material ou responsável..." oninput="renderTabela()">
     </div>
     <select class="filter" id="filtro" onchange="renderTabela()">
@@ -88,12 +86,11 @@
       <option>Cancelado</option>
     </select>
     <button class="btn-new" onclick="abrirModal()">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
-      Novo registro
+      <i class="fas fa-plus"></i> Novo registro
     </button>
   </div>
 
-  <!-- TABLE -->
+    <!-- TABLE -->
   <div class="table-card">
     <table>
       <thead>
@@ -111,8 +108,8 @@
       <tbody id="tbody"></tbody>
     </table>
     <div class="empty-state" id="empty" style="display:none">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-      Nenhum registro encontrado
+      <i class="fas fa-folder-open empty-icon"></i>
+      <p>Nenhum registro encontrado</p>
     </div>
   </div>
 
@@ -123,13 +120,13 @@
 
 </main>
 
-<!-- MODAL FORMULÁRIO -->
+    <!-- MODAL FORMULÁRIO -->
 <div class="overlay" id="modal" style="display:none" role="dialog" aria-modal="true">
   <div class="modal">
     <div class="modal-head">
       <span class="modal-title" id="modal-titulo">Novo registro</span>
       <button class="btn-close" onclick="fecharModal()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        <i class="fas fa-times"></i>
       </button>
     </div>
     <div class="modal-body">
@@ -206,36 +203,34 @@
     <div class="modal-foot">
       <button class="btn-cancel" onclick="fecharModal()">Cancelar</button>
       <button class="btn-save" id="btn-salvar" onclick="salvar()">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-        Salvar registro
+        <i class="fas fa-save"></i> Salvar registro
       </button>
     </div>
   </div>
 </div>
 
-<!-- MODAL CONFIRMAÇÃO EXCLUSÃO -->
+    <!-- MODAL CONFIRMAÇÃO EXCLUSÃO -->
 <div class="overlay" id="modal-del" style="display:none" role="dialog" aria-modal="true">
   <div class="modal" style="max-width:420px">
     <div class="modal-head">
       <span class="modal-title">Excluir registro</span>
       <button class="btn-close" onclick="fecharConfirm()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        <i class="fas fa-times"></i>
       </button>
     </div>
     <div class="confirm-body" id="confirm-body"></div>
     <div class="modal-foot">
       <button class="btn-cancel" onclick="fecharConfirm()">Cancelar</button>
       <button class="btn-danger" id="btn-del" onclick="confirmarDelete()">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
-        Excluir
+        <i class="fas fa-trash-alt"></i> Excluir
       </button>
     </div>
   </div>
 </div>
 
-<!-- TOAST -->
+    <!-- TOAST -->
 <div class="toast" id="toast">
-  <svg id="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+  <i id="toast-icon-fa" class="fas fa-check-circle"></i>
   <span id="toast-msg">OK</span>
 </div>
 

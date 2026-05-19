@@ -143,8 +143,7 @@ async function enviarParaSheets(registro, acao) {
       body: JSON.stringify(payload)
     });
 
-    // Como usamos 'no-cors', o navegador não nos deixa ler o JSON de resposta,
-    // mas se chegou até aqui sem estourar erro no catch, a requisição foi enviada com sucesso!
+    // se chegar até aqui sem estourar erro no catch, a requisição foi enviada com sucesso!
     dot.className   = 'sync-dot online';
     label.textContent = 'Sheets conectado';
     return true;
