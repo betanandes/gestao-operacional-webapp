@@ -1,4 +1,4 @@
-# Gestão Operacional — Construção a Seco 🏗️
+# Gestão Operacional — Construção a Seco
 
 > **Desafio Prático:** Integração Automatizada com Google Sheets.
 
@@ -46,12 +46,20 @@ Quando um registro é **criado, editado ou excluído**, os dados são enviados v
 
 ---
 
-## Como rodar
+## Como rodar e acessar
 
-### 1. Clone o repositório
+### Acesso Direto (Web)
+O sistema está publicado e pronto para uso. Você pode acessá-lo diretamente pelo link:
+👉 **[https://gestaop.netlify.app/](https://gestaop.netlify.app/)**
 
+---
+
+### Execução Local (Alternativa)
+Caso não consiga acessar pelo link acima ou queira realizar as configurações e rodar o projeto diretamente em sua máquina, siga os passos abaixo:
+
+#### 1. Clone o repositório
 ```bash
-git clone https://github.com/SEU_USUARIO/gestao-operacional.git
+git clone [https://github.com/SEU_USUARIO/gestao-operacional.git]
 ```
 
 ### 2. Acesse a planilha
