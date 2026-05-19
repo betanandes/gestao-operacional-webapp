@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestão Operacional — Construção a Seco</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="logo">
+    <div class="logo-mark">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+      </svg>
+    </div>
+    <div>
+      <div class="logo-text">Gestão Operacional</div>
+      <div class="logo-sub">Construção a Seco</div>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <div class="sync-info">
+      <div class="sync-dot" id="sync-dot"></div>
+      <span id="sync-label">Modo local</span>
+    </div>
+    <div class="config-banner" id="config-banner" onclick="toggleConfig()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"/></svg>
+      Google Sheets: <a>configurar</a>
+    </div>
+  </div>
+</header>
+
+<main class="page">
+
+  <!-- CONFIG CARD -->
+  <div class="config-card" id="config-card">
+    <div class="config-title">
+      ⚙️  Conectar ao Google Sheets
+    </div>
+    <div class="config-row">
+      <div class="field full">
+        <label>URL do Apps Script (Web App)</label>
+        <input type="url" id="sheets-url" placeholder="https://script.google.com/macros/s/SEU_ID.../exec">
+      </div>
+      <button class="btn-config" onclick="salvarConfig()">Salvar e conectar</button>
+    </div>
+    <p class="config-hint">
+      Como obter a URL: no Google Sheets vá em <code>Extensões → Apps Script</code>, cole o código do script fornecido, depois clique em <code>Implantar → Nova implantação → Aplicativo da Web</code>. Copie a URL gerada e cole aqui.
+    </p>
+  </div>
+
+  <!-- METRICS -->
+  <div class="metrics">
+    <div class="metric-card">
+      <div class="metric-label">Total de registros</div>
+      <div class="metric-value" id="m-total">0</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Concluídos</div>
+      <div class="metric-value green" id="m-conc">0</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Em andamento</div>
+      <div class="metric-value amber" id="m-and">0</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Pendentes</div>
+      <div class="metric-value red" id="m-pend">0</div>
+    </div>
+  </div>
+
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+    <div class="search-box">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" id="busca" placeholder="Buscar por obra, material ou responsável..." oninput="renderTabela()">
+    </div>
+    <select class="filter" id="filtro" onchange="renderTabela()">
+      <option value="">Todos os status</option>
+      <option>Concluído</option>
+      <option>Em andamento</option>
+      <option>Pendente</option>
+      <option>Cancelado</option>
+    </select>
+    <button class="btn-new" onclick="abrirModal()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+      Novo registro
+    </button>
+  </div>
+
+  <!-- TABLE -->
+  <div class="table-card">
+    <table>
+      <thead>
+        <tr>
+          <th class="col-n">#</th>
+          <th class="col-obra">Obra / Local</th>
+          <th class="col-mat">Material</th>
+          <th class="col-resp">Responsável</th>
+          <th class="col-qtd">Qtd</th>
+          <th class="col-st">Status</th>
+          <th class="col-dt">Data</th>
+          <th class="col-ac">Ações</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+    <div class="empty-state" id="empty" style="display:none">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+      Nenhum registro encontrado
+    </div>
+  </div>
+
+  <div class="pagination">
+    <span id="pag-info">0 registros</span>
+    <div class="page-btns" id="pag-btns"></div>
+  </div>
+
+</main>
+
+<!-- MODAL FORMULÁRIO -->
+<div class="overlay" id="modal" style="display:none" role="dialog" aria-modal="true">
+  <div class="modal">
+    <div class="modal-head">
+      <span class="modal-title" id="modal-titulo">Novo registro</span>
+      <button class="btn-close" onclick="fecharModal()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="field full" id="fw-obra">
+        <label>Obra / Local *</label>
+        <input type="text" id="f-obra" placeholder="Ex: Residencial Jardins — Bloco A">
+        <span class="err">Campo obrigatório</span>
+      </div>
+      <div class="field" id="fw-material">
+        <label>Material *</label>
+        <select id="f-material">
+          <option value="">Selecionar...</option>
+          <option>Drywall ST</option>
+          <option>Drywall RU</option>
+          <option>Drywall RF</option>
+          <option>Perfil Guia</option>
+          <option>Perfil Montante</option>
+          <option>Lã de Vidro</option>
+          <option>Lã de Rocha</option>
+          <option>Massa de Rejunte</option>
+          <option>Parafuso Rosca Seca</option>
+          <option>Fita Telada</option>
+          <option>Outro</option>
+        </select>
+        <span class="err">Campo obrigatório</span>
+      </div>
+      <div class="field" id="fw-qtd">
+        <label>Quantidade *</label>
+        <input type="number" id="f-qtd" placeholder="0" min="0">
+        <span class="err">Valor inválido</span>
+      </div>
+      <div class="field">
+        <label>Unidade</label>
+        <select id="f-un">
+          <option>Placa</option><option>Barra</option><option>Kg</option>
+          <option>Rolo</option><option>Caixa</option><option>Un</option>
+          <option>M²</option><option>M</option>
+        </select>
+      </div>
+      <div class="field" id="fw-resp">
+        <label>Responsável *</label>
+        <input type="text" id="f-resp" placeholder="Nome do responsável">
+        <span class="err">Campo obrigatório</span>
+      </div>
+      <div class="field">
+        <label>Status</label>
+        <select id="f-status">
+          <option>Em andamento</option>
+          <option>Concluído</option>
+          <option>Pendente</option>
+          <option>Cancelado</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Data</label>
+        <input type="date" id="f-data">
+      </div>
+      <div class="field">
+        <label>Etapa da obra</label>
+        <select id="f-etapa">
+          <option value="">—</option>
+          <option>Estrutura metálica</option>
+          <option>Fechamento</option>
+          <option>Instalações</option>
+          <option>Acabamento</option>
+          <option>Entrega</option>
+        </select>
+      </div>
+      <div class="field full">
+        <label>Observações</label>
+        <textarea id="f-obs" placeholder="Informações adicionais..."></textarea>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="fecharModal()">Cancelar</button>
+      <button class="btn-save" id="btn-salvar" onclick="salvar()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+        Salvar registro
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL CONFIRMAÇÃO EXCLUSÃO -->
+<div class="overlay" id="modal-del" style="display:none" role="dialog" aria-modal="true">
+  <div class="modal" style="max-width:420px">
+    <div class="modal-head">
+      <span class="modal-title">Excluir registro</span>
+      <button class="btn-close" onclick="fecharConfirm()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="confirm-body" id="confirm-body"></div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="fecharConfirm()">Cancelar</button>
+      <button class="btn-danger" id="btn-del" onclick="confirmarDelete()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+        Excluir
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <svg id="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+  <span id="toast-msg">OK</span>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
