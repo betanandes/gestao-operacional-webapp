@@ -12,7 +12,7 @@ Foi desenvolvido um protótipo funcional de uma **Ferramenta Web de Gestão Oper
 
 ### 🌟 Diferenciais Estratégicos do Protótipo
 * **Única Fonte da Verdade:** O sistema não armazena dados fictícios locais de forma estática; ele lê a planilha em tempo real ao iniciar e sincroniza instantaneamente qualquer inserção, edição ou exclusão.
-* **Modo de Conexão Transparente:** O colaborador visualiza o status da conexão em tempo real (`Modo Local`, `Sincronizando...`, `Sheets Conectado`) através de um indicador dinâmico (Topbar).
+* **Modo de Conexão Transparente:** O colaborador visualiza o status da conexão em tempo real (`Modo Local`, `Sincronizando...`, `Sheets Conectado`) através de um indicador dinâmico.
 * **Validação de Dados Blindada:** Interface com tratamento rígido de campos obrigatórios e sanitização de dados, evitando erros humanos de digitação ou linhas em branco na planilha.
 * **Rastreabilidade (Auditoria):** O script popula automaticamente uma coluna de controle chamada `Atualizado em` com o carimbo de data/hora exato de cada modificação.
 
@@ -42,13 +42,13 @@ O ecossistema foi desenhado sob uma arquitetura serverless simples e altamente e
 git clone [https://github.com/SEU_USUARIO/gestao-operacional.git](https://github.com/SEU_USUARIO/gestao-operacional.git)
 ```
 
-### 2. Acesso à Planilha Coletiva (Google Sheets)
+### 2. Acesso à Planilha Coletiva
 A aplicação está integrada a uma planilha centralizada que funciona como o banco de dados do ecossistema. Para acessá-la e visualizar os dados sendo populados em tempo real, utilize o link abaixo:
 👉 [Planilha de Gestão Operacional — Google Sheets](https://docs.google.com/spreadsheets/d/1GAD1Bnl_1c1cA0uYnBFF21NUefdh_YVGtJQ_Va7nvLQ/edit?usp=sharing)
 
 > ⚠️ **Nota:** Certifique-se de estar logado em uma conta Google que possua permissão de acesso a este link.
 
-### 3. Executando a Aplicação (Experiência Zero Setup)
+### 3. Executando a Aplicação
 O projeto foi desenvolvido pensando na máxima otimização de tempo, contando com uma arquitetura de **Configuração Zero**. Como o back-end já está implantado e a URL está pré-configurada nativamente no código, nenhuma configuração manual é necessária por parte do usuário.
 
 Para rodar o protótipo:
