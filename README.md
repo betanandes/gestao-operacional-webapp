@@ -43,8 +43,7 @@ git clone [https://github.com/SEU_USUARIO/gestao-operacional.git](https://github
 ```
 
 ### 2. Acesso à Planilha Coletiva
-A aplicação está integrada a uma planilha centralizada que funciona como o banco de dados do ecossistema. Para acessá-la e visualizar os dados sendo populados em tempo real, utilize o link:
-👉 [Planilha de Gestão Operacional — Google Sheets](https://docs.google.com/spreadsheets/d/1GAD1Bnl_1c1cA0uYnBFF21NUefdh_YVGtJQ_Va7nvLQ/edit?usp=sharing)
+A aplicação está integrada a uma planilha centralizada que funciona como o banco de dados do ecossistema. Para acessá-la e visualizar os dados sendo populados em tempo real, utilize o link: [Planilha de Gestão Operacional — Google Sheets](https://docs.google.com/spreadsheets/d/1GAD1Bnl_1c1cA0uYnBFF21NUefdh_YVGtJQ_Va7nvLQ/edit?usp=sharing)
 
 > ⚠️ **Nota:** Certifique-se de estar logado em uma conta Google que possua permissão de acesso a este link.
 
