@@ -4,55 +4,64 @@
 
 ---
 
-## 📝 O Problema (Contexto de Negócio)
-Vários funcionários da operação enfrentavam um gargalo diário de produtividade: era necessário preencher manualmente informações, listas de materiais e dados operacionais diretamente em uma planilha corporativa. Esse processo manual, lento e descentralizado, consumia **mais de 4 horas diárias** do tempo útil de trabalho da equipe.
+## O Problema
 
-## 💡 A Solução
-Foi desenvolvido um protótipo funcional de uma **Ferramenta Web de Gestão Operacional** focada em Construção a Seco. A aplicação resolve o problema ao fornecer uma interface moderna, ágil e intuitiva que se comunica de forma bidirecional e assíncrona com o Google Sheets, reduzindo o tempo de preenchimento de minutos para **poucos segundos por registro**.
-
-### 🌟 Diferenciais Estratégicos do Protótipo
-* **Única Fonte da Verdade:** O sistema não armazena dados fictícios locais de forma estática; ele lê a planilha em tempo real ao iniciar e sincroniza instantaneamente qualquer inserção, edição ou exclusão.
-* **Modo de Conexão Transparente:** O colaborador visualiza o status da conexão em tempo real (`Modo Local`, `Sincronizando...`, `Sheets Conectado`) através de um indicador dinâmico.
-* **Validação de Dados Blindada:** Interface com tratamento rígido de campos obrigatórios e sanitização de dados, evitando erros humanos de digitação ou linhas em branco na planilha.
-* **Rastreabilidade (Auditoria):** O script popula automaticamente uma coluna de controle chamada `Atualizado em` com o carimbo de data/hora exato de cada modificação.
+A equipe de operações precisava preencher manualmente uma planilha corporativa com listas de materiais, dados de produção e informações operacionais. O processo consumia mais de **4 horas diárias**, com risco constante de erros de digitação e registros incompletos.
 
 ---
 
-## 🛠️ Tecnologias Utilizadas
+## O que foi feito
 
-* **Front-end:** HTML5, CSS3, JavaScript.
-* **Back-end & Integração:** Google Apps Script (Engine baseada em V8 executada nos servidores Cloud da Google).
-* **Banco de Dados:** Google Sheets (Armazenamento estruturado de fácil acesso gerencial).
+Desenvolvi um protótipo de uma **ferramenta web de gestão operacional** para o contexto de Construção a Seco. A proposta foi integrar a aplicação diretamente ao Google Sheets, lendo e escrevendo dados em tempo real, mas com uma interface mais rápida e prática para o uso diário.
+
+O resultado é que um registro que antes levava minutos passa a levar **poucos segundos**.
+
+### Decisões de projeto
+
+**Sem dados estáticos.** Tudo que aparece na tela vem da planilha real, buscado no momento em que o sistema é aberto.
+
+**Status de conexão visível.** Um indicador no topo da tela mostra em tempo real se o sistema está em `Modo Local`, `Sincronizando...` ou `Sheets Conectado`.
+
+**Validação antes do envio.** Os campos obrigatórios são verificados antes de qualquer requisição e os dados são sanitizados antes de chegarem à planilha. Sem linhas em branco ou registros incompletos.
+
+**Rastreabilidade.** Toda vez que um registro é criado ou alterado, o sistema preenche automaticamente uma coluna `Atualizado em` com o horário exato da modificação.
 
 ---
 
-## 🏗️ Arquitetura e Fluxo de Dados
+## Tecnologias
 
-O ecossistema foi desenhado sob uma arquitetura serverless simples e altamente eficaz:
-
-1. **Leitura (GET):** Ao carregar o Dashboard, uma requisição `fetch()` assíncrona é disparada para o endpoint do Apps Script. O script intercepta a chamada através da função `doGet(e)`, lê as linhas do Sheets, converte-as em um array JSON perfeitamente mapeado e responde para a aplicação web, alimentando as métricas do topo e a tabela paginada.
-2. **Escrita / Mutação (POST):** Quando o usuário cria, edita ou exclui um registro, os dados limpos são encapsulados em um payload JSON e transmitidos via método `POST` com a diretriz `no-cors` para o Apps Script. A função `doPost(e)` processa a regra de negócio (append, update ou delete row) de forma indexada através do ID incremental único.
+- **Front-end:** HTML5, CSS3 e JavaScript puro
+- **Back-end:** Google Apps Script (roda nos servidores do Google, sem precisar de infraestrutura própria)
+- **Banco de dados:** Google Sheets
 
 ---
 
-## 🚀 Como Executar e Configurar o Projeto
+## Como o sistema funciona por dentro
 
-### 1. Clonar o Repositório
+A arquitetura é serverless, sem servidor para configurar ou manter.
+
+Quando o **dashboard é aberto**, a aplicação faz uma requisição assíncrona para o Google Apps Script, que lê a planilha e devolve tudo em formato JSON. Métricas e tabela paginada aparecem na tela em segundos.
+
+Quando um registro é **criado, editado ou excluído**, os dados são enviados via `POST` para o script, que identifica a operação pelo ID único do registro e faz a alteração na linha correta da planilha.
+
+---
+
+## Como rodar
+
+### 1. Clone o repositório
+
 ```bash
-git clone [https://github.com/SEU_USUARIO/gestao-operacional.git](https://github.com/SEU_USUARIO/gestao-operacional.git)
+git clone https://github.com/SEU_USUARIO/gestao-operacional.git
 ```
 
-### 2. Acesso à Planilha Coletiva
-A aplicação está integrada a uma planilha centralizada que funciona como o banco de dados do ecossistema. Para acessá-la e visualizar os dados sendo populados em tempo real, utilize o link: [Planilha de Gestão Operacional — Google Sheets](https://docs.google.com/spreadsheets/d/1GAD1Bnl_1c1cA0uYnBFF21NUefdh_YVGtJQ_Va7nvLQ/edit?usp=sharing)
+### 2. Acesse a planilha
 
-> ⚠️ **Nota:** Certifique-se de estar logado em uma conta Google que possua permissão de acesso a este link.
+Os dados ficam aqui: [Planilha de Gestão Operacional](https://docs.google.com/spreadsheets/d/1GAD1Bnl_1c1cA0uYnBFF21NUefdh_YVGtJQ_Va7nvLQ/edit?usp=sharing)
 
-### 3. Executando a Aplicação
-O projeto foi desenvolvido pensando na máxima otimização de tempo, contando com uma arquitetura de **Configuração Zero**. Como o back-end já está implantado e a URL está pré-configurada nativamente no código, nenhuma configuração manual é necessária por parte do usuário.
+> Você precisa estar logado com uma conta Google que tenha permissão de acesso.
 
-Para rodar o protótipo:
-1. Abra o arquivo `index.html` diretamente no seu navegador (recomendado utilizar a extensão *Live Server* do VS Code para garantir o ciclo completo de requisições assíncronas).
-2. Assim que a página carregar, o indicador visual (Topbar) mudará automaticamente para o status verde **"Sheets conectado"**.
-3. O sistema fará a busca assíncrona imediata e trará todos os dados reais da planilha diretamente para a sua tela. 
+### 3. Abra e use
 
-*Qualquer inserção, edição ou exclusão feita pela interface web atualizará a planilha compartilhada para todos os usuários em tempo real.*
+Não há nada para configurar. O back-end já está no ar e a URL já está no código. Basta abrir o `index.html` no navegador. Para garantir o ciclo completo de requisições assíncronas, recomendo usar a extensão **Live Server** do VS Code.
+
+Assim que a página carregar, o indicador ficará verde com **"Sheets conectado"** e os dados aparecem na tela. Qualquer alteração feita pela interface reflete na planilha em tempo real para todos os usuários.
