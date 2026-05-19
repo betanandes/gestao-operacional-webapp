@@ -1,4 +1,4 @@
-let SHEETS_URL = localStorage.getItem('sheetsUrl') || '';
+let SHEETS_URL = localStorage.getItem('sheetsUrl') || 'https://script.google.com/macros/s/AKfycbxieaJaEcuTI95pPzGbycOCEcTg1bzzoBDeIj6H1KHzGjKx2MVrA-9nQw1PIclK_Mk/exec';
 
 // ============================================================
 // ESTADO
